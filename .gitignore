@@ -1,0 +1,66 @@
+# Terraform
+terraform/.terraform/
+terraform/**/.terraform/
+terraform/**/*.tfstate
+terraform/**/*.tfstate.*
+terraform/**/.terraform.lock.hcl
+terraform/**/.tfvars
+terraform/**/*.tfvars
+dossier\ iaas/**/.terraform/
+dossier\ iaas/**/*.tfstate
+dossier\ iaas/**/*.tfstate.*
+dossier\ iaas/**/.terraform.lock.hcl
+dossier\ iaas/**/.tfvars
+dossier\ iaas/**/*.tfvars
+
+# Cloud Provider Credentials & Secrets
+gcp-service-account.json
+*-service-account.json
+*.key
+*.pem
+.env
+.env.local
+.env.*.local
+
+# Ansible
+ansible/**/vault
+ansible/**/.vault
+ansible/**/*.vault
+ansible/**/*vault*
+ansible/**/.ansible/
+ansible/**/*.retry
+
+# IDE & Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+*.sublime-*
+.project
+.classpath
+.c9/
+
+# OS Files
+.DS_Store
+.AppleDouble
+.LSOverride
+*.cab
+.TemporaryItems
+
+# Logs
+*.log
+logs/
+*.log.*
+
+# Dependencies
+node_modules/
+venv/
+env/
+.venv/
+
+# Temporary files
+*.tmp
+*.bak

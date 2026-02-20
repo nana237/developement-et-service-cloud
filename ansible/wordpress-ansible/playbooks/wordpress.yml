@@ -1,0 +1,85 @@
+---
+- name: Install WordPress on VMs
+  hosts: wordpress
+  become: yes
+  tasks:
+    
+    - name: Installer dépendances MySQL Python
+      apt:
+        name: python3-pymysql
+        state: present
+        update_cache: yes
+
+    - name: Update packages
+      apt:
+        update_cache: yes
+        upgrade: dist
+
+    - name: Install Apache, MySQL and PHP
+      apt:
+        name:
+          - apache2
+          - default-mysql-server
+          - php
+          - php-mysql
+          - libapache2-mod-php
+          - php-cli
+          - php-curl
+          - php-gd
+          - php-mbstring
+          - php-xml
+          - php-xmlrpc
+        state: present
+
+    - name: Start Apache and MySQL
+      service:
+        name: "{{ item }}"
+        state: started
+        enabled: yes
+      loop:
+        - apache2
+        - mysql
+
+    - name: Download WordPress
+      get_url:
+        url: https://wordpress.org/latest.tar.gz
+        dest: /tmp/wordpress.tar.gz
+
+    - name: Remove old WordPress
+      file:
+        path: /var/www/html/wordpress
+        state: absent
+
+    - name: Remove default Apache page
+      file:
+        path: /var/www/html/index.html
+        state: absent
+
+    - name: Unzip WordPress
+      unarchive:
+        src: /tmp/wordpress.tar.gz
+        dest: /var/www/html/
+        remote_src: yes
+
+    - name: Gives right to Apache
+      file:
+        path: /var/www/html/wordpress
+        state: directory
+        recurse: yes
+        owner: www-data
+        group: www-data
+
+    - name: config MySQL for WordPress
+      community.mysql.mysql_db:
+        name: wordpress
+        state: present
+        login_unix_socket: /run/mysqld/mysqld.sock
+
+    - name: create user MySQL WordPress
+      community.mysql.mysql_user:
+        name: wpuser
+        password: wppassword
+        priv: "wordpress.*:ALL"
+        host: localhost
+        state: present
+        login_unix_socket: /run/mysqld/mysqld.sock
